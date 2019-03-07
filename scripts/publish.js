@@ -7,7 +7,9 @@ publish('.', {
     'index.js',
     'bundle.js',
     'style.css',
-    'index.html'
+    'index.html',
+    'resume.md',
+    'resume.en.md'
   ],
   dotfiles: true
 }, console.log)
