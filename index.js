@@ -1,0 +1,63 @@
+/* global fetch */
+import markdown from 'https://unpkg.com/md?module'
+import { html, render } from 'https://unpkg.com/lit-html?module'
+
+(async function () {
+  const source = 'resume.md'
+  let response
+  let result
+  let md
+  let page = document.querySelector('article')
+  try {
+    response = await fetch(source)
+    if (response && response.ok) {
+      result = await response.text()
+      md = markdown(result)
+      render(html([md]), page)
+    }
+
+    // paginate
+    let pageSize = page.clientHeight
+    let contentSize = Array.prototype.reduce.call(page.children, (prev, acc) => {
+      return prev + acc.offsetHeight + parseInt(window.getComputedStyle(acc).marginBottom) + parseInt(window.getComputedStyle(acc).marginTop)
+    }, 0)
+    if (contentSize > pageSize) {
+      let acumSize = 0
+      let i = 0
+      let numChilds = page.children.length
+      for (let j = 0; j < numChilds; j++) {
+        let child = page.children[i]
+        let isPageBreak = child.tagName === 'HR'
+        acumSize += isPageBreak ? child.offsetHeight + parseInt(window.getComputedStyle(child).marginBottom) + parseInt(window.getComputedStyle(child).marginTop) : 0
+        if (acumSize > pageSize || isPageBreak) {
+          if (isPageBreak) child.remove()
+          let newPage = page.cloneNode(true)
+          removeChilds(newPage, 0, i)
+          removeChilds(page, i, page.children.length)
+          page.after(newPage)
+          page.style.visibility = 'visible'
+          page = newPage
+          acumSize = 0
+          i = 0
+        } else {
+          i++
+        }
+      }
+      page.style.visibility = 'visible'
+    } else {
+      page.style.visibility = 'visible'
+    }
+  } catch (e) {
+    console.log(e)
+  }
+
+  function removeChilds (parent, from, to) {
+    let childrenToRemove = []
+    let j = 0
+    for (let i = from; i < to; i++) {
+      childrenToRemove[j] = parent.children[i]
+      j++
+    }
+    for (let i = 0; i < childrenToRemove.length; i++) childrenToRemove[i].remove()
+  }
+})()

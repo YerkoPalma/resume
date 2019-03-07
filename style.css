@@ -1,0 +1,92 @@
+body {
+  margin: 5% 20%;
+  width: 60%;
+}
+article {
+  height: 11in;
+  max-width: 8.5in;
+  width: 8.5in;
+  visibility: hidden;
+}
+
+article:not(:nth-last-child(-1n + 1)) {
+  margin-bottom: 10%;
+}
+
+article h1 {
+  text-align: center;
+  color: #00449e;
+  border-bottom: 1px solid;
+}
+
+article h2 {
+  color: #357edd;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+article ul {
+  width: 100%;
+  display: table;
+  border-spacing: 1rem .5rem;
+  margin-right: auto;
+  padding-left: 0;
+  list-style-type: none;
+  border-collapse: collapse;
+}
+article #antecedentes-personales + ul {
+  border-spacing: 0 1rem;
+  border-collapse: separate;
+}
+
+article li {
+  margin-bottom: .5rem;
+  display: table-row;
+}
+
+article li > strong {
+  margin-right: 1rem;
+  display: table-cell;
+  padding-right: 2rem;
+}
+
+article li > strong + p {
+  padding-left: 5%;
+  border-left: solid 1px #357edd;
+  margin: 0;
+}
+
+article li:not(:last-child) > strong + p {
+  padding-bottom: 1rem;
+}
+
+article li > em {
+  display: table-cell;
+  width: 35%;
+  font-style: normal;
+}
+article p {
+  text-align: justify;
+  line-height: 1.25;
+}
+
+/* printing */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: white !important;
+  }
+  article {
+    page-break-after: always;
+    margin-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+@page {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
